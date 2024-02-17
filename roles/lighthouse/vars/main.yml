@@ -1,0 +1,2 @@
+---
+src_light: "../templates/nginx.conf.j2"

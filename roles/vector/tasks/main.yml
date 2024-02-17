@@ -1,0 +1,29 @@
+---
+- name: Get Vector distrib
+  ansible.builtin.get_url:
+    url: "https://packages.timber.io/vector/0.33.0/vector-{{ vector_version }}-{{ vector_architecture }}-unknown-linux-gnu.tar.gz"
+    dest: "/tmp/vector-{{ vector_version }}-{{ vector_architecture }}-unknown-linux-gnu.tar.gz"
+    mode: "0644"
+- name: Create Vector directory
+  become: true
+  ansible.builtin.file:
+    path: "/etc/vector"
+    state: directory
+    mode: "0644"
+- name: Unarchive Vector package
+  become: true
+  ansible.builtin.unarchive:
+    src: /tmp/vector-{{ vector_version }}-{{ vector_architecture }}-unknown-linux-gnu.tar.gz
+    dest: /etc/vector
+    remote_src: true
+    mode: "0644"
+- name: Template file
+  become: true
+  ansible.builtin.template:
+    src: vector.toml.j2
+    dest: /etc/vector/vector.toml
+    mode: "0644"
+- name: Run Vector
+  become: true
+  ansible.builtin.shell: /etc/vector/vector-x86_64-unknown-linux-gnu/bin/vector --config /etc/vector/vector.toml &
+  changed_when: true

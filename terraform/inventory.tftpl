@@ -1,0 +1,20 @@
+[clickhouse]
+
+%{~ for i in clickhouse ~}
+
+${i["name"]}   ansible_host=${i["network_interface"][0]["ip_address"]} 
+%{~ endfor ~}
+
+[vector]
+
+%{~ for i in vector ~}
+
+${i["name"]}   ansible_host=${i["network_interface"][0]["ip_address"]} 
+%{~ endfor ~}
+
+[lighthouse]
+
+%{~ for i in lighthouse ~}
+
+${i["name"]}   ansible_host=${i["network_interface"][0]["ip_address"]} 
+%{~ endfor ~}

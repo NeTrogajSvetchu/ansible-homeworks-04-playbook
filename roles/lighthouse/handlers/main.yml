@@ -1,0 +1,17 @@
+---
+- name: NGINX | Start nginx
+  become: true
+  ansible.builtin.command:
+    name: nginx
+- name: NGINX | Reload nginx
+  become: true
+  ansible.builtin.command:
+    name: sudo nginx -s reload
+- name: Lighthouse | Start nginx
+  become: true
+  ansible.builtin.command:
+    name: nginx
+- name: Lighthouse | Reload nginx
+  become: true
+  ansible.builtin.command:
+    name: sudo nginx -s reload

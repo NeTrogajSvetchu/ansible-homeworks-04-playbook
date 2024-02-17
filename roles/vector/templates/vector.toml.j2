@@ -1,0 +1,24 @@
+# Set global options1231234
+data_dir = "/var/lib/vector"
+
+{% set loop_helper = {
+    "sources": (sources | default({})),
+    "transforms": (transforms | default({})),
+    "sinks": (sinks | default({}))
+} %}
+
+{% for name, cat in loop_helper.items() | sort(attribute='0') %}
+{% for key, value in cat.items() | sort(attribute='0') %}
+[{{ name }}.{{ key }}]
+  {% if value %}
+  {%- for skey, svalue in value.items() | sort(attribute='0') %}
+{%- if svalue is string %}
+  {{ skey }} = "{{ svalue }}"
+{% else %}
+  {{ skey }} = {{ svalue | tojson }}
+{% endif %}
+  {% endfor %}
+  {%- endif %}
+
+{% endfor %}
+{% endfor %}
